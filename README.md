@@ -1,0 +1,2 @@
+# badapill
+twitch bot
