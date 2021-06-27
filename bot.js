@@ -70,6 +70,10 @@ const acceptedCommands = {
     comandos(target, context, args, command) {
         client.say(target, `!redes !youtube !twitter !discord !cortes !followage !humor !zaza !badabing !cellbit`);
         console.log(`* Executed ${command} command`);
+    },
+    sonhos(target, context, args, command) {
+        client.say(target, `escute SONHOS TOMAM CONTA https://www.last.fm/pt/music/sonhos+tomam+conta/`);
+        console.log(`* Executed ${command} command`);
     }
 }
 
