@@ -68,7 +68,7 @@ const acceptedCommands = {
         console.log(`* Executed ${command} command`);
     },
     comandos(target, context, args, command) {
-        client.say(target, `!redes !youtube !twitter !discord !cortes !followage !humor !zaza !badabing !cellbit`);
+        client.say(target, `!redes !youtube !twitter !discord !cortes !followage !zaza !humor !badabing !sonhos !cellbit`);
         console.log(`* Executed ${command} command`);
     },
     sonhos(target, context, args, command) {
