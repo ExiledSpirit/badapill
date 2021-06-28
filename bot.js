@@ -43,8 +43,7 @@ const acceptedCommands = {
     },
     followage(target, context, args, command) {
         const request = require('request');
-        const canal = target.substring(1);
-        request(`https://beta.decapi.me/twitch/followage/${canal}/${context.username}`, { json: true }, (err, res, body) => {
+        request(`https://beta.decapi.me/twitch/followage/${target.substring(1)}/${context.username}`, { json: true }, (err, res, body) => {
             if (err) { return console.log(err); }
             client.say(target, `@${context.username} é abençoado por badabing há ${body}`);
         });
@@ -60,7 +59,7 @@ const acceptedCommands = {
     },
     badabing(target, context, args, command) {
         const texto = randomText();
-        client.say(target, `${texto}`);
+        client.say(target, `badabing diz ${texto}`);
         console.log(`* Executed ${command} command ${texto}`);
     },
     cellbit(target, context, args, command) {
@@ -68,11 +67,15 @@ const acceptedCommands = {
         console.log(`* Executed ${command} command`);
     },
     comandos(target, context, args, command) {
-        client.say(target, `!redes !youtube !twitter !discord !cortes !followage !zaza !humor !badabing !sonhos !cellbit`);
+        client.say(target, `!redes !youtube !twitter !discord !cortes !followage !zaza !humor !badabing !sonhos !cringe`);
         console.log(`* Executed ${command} command`);
     },
     sonhos(target, context, args, command) {
         client.say(target, `escute SONHOS TOMAM CONTA https://www.last.fm/pt/music/sonhos+tomam+conta/`);
+        console.log(`* Executed ${command} command`);
+    },
+    cringe(target, context, args, command) {
+        client.say(target, `PALAVRA EM QUARENTENA, SUBSTITUIDA POR "GEEK"`);
         console.log(`* Executed ${command} command`);
     }
 }
