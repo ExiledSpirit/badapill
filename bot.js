@@ -18,7 +18,7 @@ client.on('connected', onConnectedHandler);
 
 client.connect();
 
-const textos =  ['ao que tudo indica...', 'sim', 'creio que não.', 'você está ansioso, concentre-se e pergunte novamente', 'agora não da to vendo o jogo do flamengo', 'só cordinha pra resolver isso', 'é melhor não te contar...', 'duvidoso', 'objetivamente, sim', 'não tenho certeza... talvez um sub refresque minha memória', 'pergunte novamente depois', 'não.', 'silêncio o MODERADOR Carlima está papando xota.'];
+
 
 const acceptedCommands = {
     redes(target, context, args, command) {
@@ -77,8 +77,26 @@ const acceptedCommands = {
     cringe(target, context, args, command) {
         client.say(target, `PALAVRA EM QUARENTENA, SUBSTITUIDA POR "GEEK"`);
         console.log(`* Executed ${command} command`);
+    },
+    nota(target, context, args, command) {
+        if(args.length < 4) {
+            client.say(target, `Argumentos insuficientes -> !nota <Usuario> <MangaList || AnimeList> <Anime>`);
+            return;
+        }
+        const request = require('request');
+        request(`https://api.jikan.moe/v3/user/${args[1]}/${args[2]}?q=${args[3]}`, { json: true }, (err, res, body) => {
+            if (err) { return console.log(err); }
+            if(body.manga.length < 1) {
+                return client.say(target, `${args[1]} ainda não avaliou essa obra`);
+            }
+            console.log(body.manga[0].score);
+            client.say(target, `Nota de ${args[1]}: ${body.manga[0].score}`);
+        });
+        console.log(`* Executed ${command} command`);
     }
 }
+
+
 
 function onMessageHandler (target, context, message, self) {
     if (self) { return; }
@@ -91,6 +109,7 @@ function onMessageHandler (target, context, message, self) {
     if(message.substring(0, 1) == '!') {
         var args = message.substring(1).split(' ');
         var command = args[0];
+        console.log(args);
         const commandFunction = acceptedCommands[command];
         if(commandFunction) {
             commandFunction(target, context, args, command);
@@ -108,6 +127,7 @@ function isCellbit(mensagem) {
     return false;
 }
 function randomText() {
+    const textos =  ['ao que tudo indica...', 'sim', 'creio que não.', 'você está ansioso, concentre-se e pergunte novamente', 'agora não da to vendo o jogo do flamengo', 'só cordinha pra resolver isso', 'é melhor não te contar...', 'duvidoso', 'objetivamente, sim', 'não tenho certeza... talvez um sub refresque minha memória', 'pergunte novamente depois', 'não.', 'silêncio o MODERADOR Carlima está papando xota.'];
     const value = Math.floor(Math.random() * textos.length);
     return textos[value];
 }
