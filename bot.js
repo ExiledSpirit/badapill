@@ -145,7 +145,7 @@ type = {
         if(body.anime) {
             var result;
             //Verifica se foi encontrado algum anime
-            if(!body.manga[0]) {
+            if(!body.anime[0]) {
                 result = `${args[1]} ainda não avaliou essa obra`;
                 return client.say(target, result);               
             }
