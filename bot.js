@@ -83,13 +83,11 @@ const acceptedCommands = {
             client.say(target, `Argumentos insuficientes -> !nota <Usuario> <MangaList || AnimeList> <Obra>`);
             return;
         }
-        const response = malResponse(args);
-        client.say(target, response);
+        malResponse(args, target);
         
         console.log(`* Executed ${command} command`);
     }
 }
-
 
 
 function onMessageHandler (target, context, message, self) {
@@ -131,47 +129,47 @@ function onConnectedHandler (addr, port) {
 
 
 type = {
-    mangalist(body) {
+    mangalist(body, args, target) {
         if(body.manga) {
+            var result;
             //Verifica se foi encontrado algum manga
-            if(body.manga.lenght < 1) {
-                result = `${args[1]} ainda não avaliou essa obra`;
-                return result;               
+            if(!body.manga[0]) {
+                result = args[1] + " ainda não avaliou essa obra";
+                return client.say(target, result);               
             }
-            result = `Nota de ${args[1]}: ${body.manga[0].score}`;
-            return result;
+            result = "Nota de " + args[1] + " para " + body.manga[0].title + ": " + body.anime[0].score;
+            return client.say(target, result);
         }
     },
-    animelist(body) {
+    animelist(body, args, target) {
         if(body.anime) {
+            var result;
             //Verifica se foi encontrado algum anime
             if(body.anime.lenght < 1) {
-                result = `${args[1]} ainda não avaliou essa obra`;
-                return result;               
+                result = args[1] + " ainda não avaliou essa obra";
+                return client.say(target, result);               
             }
-            result = `Nota de ${args[1]}: ${body.anime[0].score}`;
-            return result;
+            result = "Nota de " + args[1] + " para " + body.anime[0].title + ": " + body.anime[0].score;
+            return client.say(target, result);               
         }
     }
 }
 
 //jikanApi
-function malResponse(args) {
+function malResponse(args, target) {
     //Verifica se fora enviado mangalist ou animelist
     const tipo = type[args[2]];
-    if(!tipo) return `Especifique <mangalist || animelist>`;
-
+    if(!tipo) return client.say('Especifique <mangalist || animelist>');
     var result;
     //request jikan com parametro
     const request = require('request');
     request(`https://api.jikan.moe/v3/user/${args[1]}/${args[2]}?q=${args[3]}`, { json: true }, (err, res, body) => {
-        console.log(body);
         //Se conter erro irá retornar como status
         if(body.status){
-            return erros[body.status] ? erros[body.status]() : `Erro desconhecido`;
+            return [body.status] ? client.say(target, errors[body.status]()) : client.say('Erro desconhecido');
         }
         //Caso retorne com sucesso
-        return tipo(body);
+        tipo(body, args, target);
     });
 }
 
