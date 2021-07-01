@@ -26,11 +26,11 @@ const acceptedCommands = {
         console.log(`* Executed ${command} command`);
     },
     youtube(target, context, args, command) {
-        client.say(target, `https://twitter.com/distopiapdc`);
+        client.say(target, `https://www.youtube.com/channel/UCduqNRUbhbzPbNmmK6ODrfQ`);
         console.log(`* Executed ${command} command`);
     },
     twitter(target, context, args, command) {
-        client.say(target, `https://www.youtube.com/channel/UCduqNRUbhbzPbNmmK6ODrfQ`);
+        client.say(target, `https://twitter.com/distopiapdc`);
         console.log(`* Executed ${command} command`);
     },
     discord(target, context, args, command) {
@@ -80,18 +80,12 @@ const acceptedCommands = {
     },
     nota(target, context, args, command) {
         if(args.length < 4) {
-            client.say(target, `Argumentos insuficientes -> !nota <Usuario> <MangaList || AnimeList> <Anime>`);
+            client.say(target, `Argumentos insuficientes -> !nota <Usuario> <MangaList || AnimeList> <Obra>`);
             return;
         }
-        const request = require('request');
-        request(`https://api.jikan.moe/v3/user/${args[1]}/${args[2]}?q=${args[3]}`, { json: true }, (err, res, body) => {
-            if (err) { return console.log(err); }
-            if(body.manga.length < 1) {
-                return client.say(target, `${args[1]} ainda não avaliou essa obra`);
-            }
-            console.log(body.manga[0].score);
-            client.say(target, `Nota de ${args[1]}: ${body.manga[0].score}`);
-        });
+        const response = malResponse(args);
+        client.say(target, response);
+        
         console.log(`* Executed ${command} command`);
     }
 }
@@ -133,4 +127,79 @@ function randomText() {
 }
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+}
+
+
+type = {
+    mangalist(body) {
+        if(body.manga) {
+            //Verifica se foi encontrado algum manga
+            if(body.manga.lenght < 1) {
+                result = `${args[1]} ainda não avaliou essa obra`;
+                return result;               
+            }
+            result = `Nota de ${args[1]}: ${body.manga[0].score}`;
+            return result;
+        }
+    },
+    animelist(body) {
+        if(body.anime) {
+            //Verifica se foi encontrado algum anime
+            if(body.anime.lenght < 1) {
+                result = `${args[1]} ainda não avaliou essa obra`;
+                return result;               
+            }
+            result = `Nota de ${args[1]}: ${body.anime[0].score}`;
+            return result;
+        }
+    }
+}
+
+//jikanApi
+function malResponse(args) {
+    //Verifica se fora enviado mangalist ou animelist
+    const tipo = type[args[2]];
+    if(!tipo) return `Especifique <mangalist || animelist>`;
+
+    var result;
+    //request jikan com parametro
+    const request = require('request');
+    request(`https://api.jikan.moe/v3/user/${args[1]}/${args[2]}?q=${args[3]}`, { json: true }, (err, res, body) => {
+        console.log(body);
+        //Se conter erro irá retornar como status
+        if(body.status){
+            return erros[body.status] ? erros[body.status]() : `Erro desconhecido`;
+        }
+        //Caso retorne com sucesso
+        return tipo(body);
+    });
+}
+
+
+
+const errors = {
+    200() {
+        return 'OK - the request was successful.';
+    },
+    304() {
+        return 'Not Modified - You have the latest data';
+    },
+    400() {
+        return 'Bad Request - You’ve made an invalid request';
+    },
+    404() {
+        return 'Not Found - Resource not found, i.e MyAnimeList responded with a 404';
+    },
+    405() {
+        return 'Method Not Allowed - requested method is not supported for resource';
+    },
+    429() {
+        return 'Too Many Requests - You are being rate limited or Jikan is being rate limited by MyAnimeList (either is specified in the error message)';
+    },
+    500() {
+        return 'Internal Server Error - Something is not working on our end, please open a Github issue by clicking on the generated report_url';
+    },
+    503() {
+        return 'Service Unavailable - Something is not working on MyAnimeList’s end. MyAnimeList is either down/unavailable or is refusing to connect';
+    }
 }
