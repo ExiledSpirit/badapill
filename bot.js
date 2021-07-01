@@ -137,7 +137,7 @@ type = {
                 result = `${args[1]} ainda não avaliou essa obra`;
                 return client.say(target, result);               
             }
-            result = `Nota de ${args[1]} para ${body.manga[0].title}: ${body.anime[0].score}`;
+            result = `Nota de ${args[1]} para ${body.manga[0].title}: ${body.manga[0].score}`;
             return client.say(target, result);
         }
     },
@@ -165,6 +165,7 @@ function malResponse(args, target) {
     const request = require('request');
     request(`https://api.jikan.moe/v3/user/${args[1]}/${args[2]}?q=${args[3]}`, { json: true }, (err, res, body) => {
         //Se conter erro irá retornar como status
+        console.log(body);
         if(body.status){
             return [body.status] ? client.say(target, errors[body.status]()) : client.say('Erro desconhecido');
         }
