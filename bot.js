@@ -134,10 +134,10 @@ type = {
             var result;
             //Verifica se foi encontrado algum manga
             if(!body.manga[0]) {
-                result = args[1] + " ainda não avaliou essa obra";
+                result = `${args[1]} ainda não avaliou essa obra`;
                 return client.say(target, result);               
             }
-            result = "Nota de " + args[1] + " para " + body.manga[0].title + ": " + body.anime[0].score;
+            result = `Nota de ${args[1]} para ${body.manga[0].title}: ${body.anime[0].score}`;
             return client.say(target, result);
         }
     },
@@ -146,10 +146,10 @@ type = {
             var result;
             //Verifica se foi encontrado algum anime
             if(body.anime.lenght < 1) {
-                result = args[1] + " ainda não avaliou essa obra";
+                result = `${args[1]} ainda não avaliou essa obra`;
                 return client.say(target, result);               
             }
-            result = "Nota de " + args[1] + " para " + body.anime[0].title + ": " + body.anime[0].score;
+            result = `Nota de ${args[1]} para ${body.anime[0].title}: ${body.anime[0].score}`;
             return client.say(target, result);               
         }
     }
