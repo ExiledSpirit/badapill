@@ -85,7 +85,7 @@ const acceptedCommands = {
         for(i = 4; i < args.length; i++) args[3] += ` ${args[i]}`;
         let nota = require("./mal");
         let response = await nota.nota(args[1], args[2], args[3]);
-        console.log(response);
+        client.say(target, `${response}`);
         console.log(`* Executed ${command} command`);
     }
 }
