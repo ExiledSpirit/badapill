@@ -7,7 +7,7 @@ const opts = {
         password: process.env.TWITCH_OAUTH_TOKEN
     },
     channels: [
-        'exiledspirit1'
+        'distopiapdc'
     ]
 };
 
