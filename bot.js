@@ -7,7 +7,7 @@ const opts = {
         password: process.env.TWITCH_OAUTH_TOKEN
     },
     channels: [
-        'distopiapdc'
+        'exiledspirit1'
     ]
 };
 
@@ -78,13 +78,14 @@ const acceptedCommands = {
         client.say(target, `PALAVRA EM QUARENTENA, SUBSTITUIDA POR "GEEK"`);
         console.log(`* Executed ${command} command`);
     },
-    nota(target, context, args, command) {
+    async nota(target, context, args, command) {
         if(args.length < 4) {
-            client.say(target, `Argumentos insuficientes -> !nota <Usuario> <MangaList || AnimeList> <Obra>`);
-            return;
+            return client.say(target, `Argumentos insuficientes -> !nota <Usuario> <m || a> <Obra>`);
         }
-        malResponse(args, target);
-        
+        for(i = 4; i < args.length; i++) args[3] += ` ${args[i]}`;
+        let nota = require("./mal");
+        let response = await nota.nota(args[1], args[2], args[3]);
+        console.log(response);
         console.log(`* Executed ${command} command`);
     }
 }
@@ -125,80 +126,4 @@ function randomText() {
 }
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
-}
-
-
-type = {
-    mangalist(body, args, target) {
-        if(body.manga) {
-            var result;
-            //Verifica se foi encontrado algum manga
-            if(!body.manga[0]) {
-                result = `${args[1]} ainda não avaliou essa obra`;
-                return client.say(target, result);               
-            }
-            result = `Nota de ${args[1]} para ${body.manga[0].title}: ${body.manga[0].score}`;
-            return client.say(target, result);
-        }
-    },
-    animelist(body, args, target) {
-        if(body.anime) {
-            var result;
-            //Verifica se foi encontrado algum anime
-            if(!body.anime[0]) {
-                result = `${args[1]} ainda não avaliou essa obra`;
-                return client.say(target, result);               
-            }
-            result = `Nota de ${args[1]} para ${body.anime[0].title}: ${body.anime[0].score}`;
-            return client.say(target, result);               
-        }
-    }
-}
-
-//jikanApi
-function malResponse(args, target) {
-    //Verifica se fora enviado mangalist ou animelist
-    const tipo = type[args[2]];
-    if(!tipo) return client.say('Especifique <mangalist || animelist>');
-    var result;
-    //request jikan com parametro
-    const request = require('request');
-    request(`https://api.jikan.moe/v3/user/${args[1]}/${args[2]}?q=${args[3]}`, { json: true }, (err, res, body) => {
-        //Se conter erro irá retornar como status
-        console.log(body);
-        if(body.status){
-            return [body.status] ? client.say(target, errors[body.status]()) : client.say('Erro desconhecido');
-        }
-        //Caso retorne com sucesso
-        tipo(body, args, target);
-    });
-}
-
-
-
-const errors = {
-    200() {
-        return 'OK - the request was successful.';
-    },
-    304() {
-        return 'Not Modified - You have the latest data';
-    },
-    400() {
-        return 'Bad Request - You’ve made an invalid request';
-    },
-    404() {
-        return 'Not Found - Resource not found, i.e MyAnimeList responded with a 404';
-    },
-    405() {
-        return 'Method Not Allowed - requested method is not supported for resource';
-    },
-    429() {
-        return 'Too Many Requests - You are being rate limited or Jikan is being rate limited by MyAnimeList (either is specified in the error message)';
-    },
-    500() {
-        return 'Internal Server Error - Something is not working on our end, please open a Github issue by clicking on the generated report_url';
-    },
-    503() {
-        return 'Service Unavailable - Something is not working on MyAnimeList’s end. MyAnimeList is either down/unavailable or is refusing to connect';
-    }
 }
