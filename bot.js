@@ -87,6 +87,10 @@ const acceptedCommands = {
         let response = await nota.nota(args[1], args[2], args[3]);
         client.say(target, `${response}`);
         console.log(`* Executed ${command} command`);
+    },
+    minecraft(target, context, args, command) {
+        client.say(target, `TABELAS DE SUB -=> https://imgur.com/a/CCdmgM3`);
+        console.log(`* Executed ${command} command`);
     }
 }
 
