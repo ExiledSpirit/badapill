@@ -89,7 +89,7 @@ const acceptedCommands = {
         console.log(`* Executed ${command} command`);
     },
     minecraft(target, context, args, command) {
-        client.say(target, `TABELAS DE SUB -=> https://imgur.com/a/CCdmgM3`);
+        client.say(target, `TABELAS DE SUB\n-=> https://imgur.com/a/CCdmgM3`);
         console.log(`* Executed ${command} command`);
     }
 }
