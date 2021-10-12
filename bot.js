@@ -23,23 +23,23 @@ client.connect();
 const acceptedCommands = {
     redes(target, context, args, command) {
         client.say(target, `https://linktr.ee/distopiapdc`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     youtube(target, context, args, command) {
         client.say(target, `https://www.youtube.com/channel/UCduqNRUbhbzPbNmmK6ODrfQ`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     twitter(target, context, args, command) {
         client.say(target, `https://twitter.com/distopiapdc`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     discord(target, context, args, command) {
-        client.say(target, `https://discord.gg/BrJ8K85NmF`);
-        console.log(`* Executed ${command} command`);
+        client.say(target, `https://discord.gg/uvXPf5s9`);
+        executedCommand(command);
     },
     cortes(target, context, args, command) {
         client.say(target, `MELHORES CLIPES DA LIVE EM https://www.youtube.com/channel/UCwrxru7te7vuttU546DG6OA`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     followage(target, context, args, command) {
         const request = require('request');
@@ -47,36 +47,36 @@ const acceptedCommands = {
             if (err) { return console.log(err); }
             client.say(target, `@${context.username} é abençoado por badabing há ${body}`);
         });
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     humor(target, context, args, command) {
         client.say(target, `maiconkusterhumorcontato@outlook.com`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     zaza(target, context, args, command) {
         client.say(target, `https://docs.google.com/document/d/10oqGc_pzhaVjQ7kG_Mlbz6MuA64gibVNtmklyQxdrtw/edit`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     badabing(target, context, args, command) {
         const texto = randomText();
         client.say(target, `badabing diz ${texto}`);
-        console.log(`* Executed ${command} command ${texto}`);
+        executedCommand(command);
     },
     cellbit(target, context, args, command) {
         client.say(target, `oi pleb, vire sub https://www.twitch.tv/subs/distopiapdc`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     comandos(target, context, args, command) {
         client.say(target, `!redes !youtube !twitter !discord !cortes !followage !zaza !humor !badabing !sonhos !cringe`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     sonhos(target, context, args, command) {
         client.say(target, `escute SONHOS TOMAM CONTA https://www.last.fm/pt/music/sonhos+tomam+conta/`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     cringe(target, context, args, command) {
         client.say(target, `PALAVRA EM QUARENTENA, SUBSTITUIDA POR "GEEK"`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     async nota(target, context, args, command) {
         if(args.length < 4) {
@@ -86,12 +86,24 @@ const acceptedCommands = {
         let nota = require("./mal");
         let response = await nota.nota(args[1], args[2], args[3]);
         client.say(target, `${response}`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
     },
     minecraft(target, context, args, command) {
         client.say(target, `TABELAS DE SUB`);
         client.say(target, `-=> https://imgur.com/a/CCdmgM3`);
-        console.log(`* Executed ${command} command`);
+        executedCommand(command);
+    },
+    pix(target, context, args, command) {
+      client.say(target, `DA DINHEIRO https://livepix.gg/distopiapdc`);
+      executedCommand(command);
+    },
+    emblemas(target, context, args, command) {
+      client.say(target, `EMBLEMAS -=> https://imgur.com/a/aArXBea`);
+      executedCommand(command);
+    },
+    emblema(target, context, args, command) {
+      client.say(target, `EMBLEMAS -=> https://imgur.com/a/aArXBea`);
+      executedCommand(command);
     }
 }
 
@@ -99,8 +111,11 @@ const acceptedCommands = {
 function onMessageHandler (target, context, message, self) {
     if (self) { return; }
 
-    if(isCellbit(message)) {
+    if(includesMessage(message, 'cellbit')) {
         acceptedCommands['cellbit'](target, null, null, 'cellbit');
+    }
+    if(includesMessage(message, 'pix')) {
+        acceptedCommands['pix'](target, null, null, 'pix');
     }
     
     
@@ -117,13 +132,15 @@ function onMessageHandler (target, context, message, self) {
     }
 }
 
-function isCellbit(mensagem) {
+function includesMessage(mensagem, comparar) {
+    if (mensagem.includes(comparar)) return true;
     const teste = mensagem.split(" ");
     for(var i = 0; i < teste.length; i++) {
-        if(teste[i] === 'cellbit') return true;
+        if(teste[i] === comparar) return true;
     }
     return false;
 }
+
 function randomText() {
     const textos =  ['ao que tudo indica...', 'sim', 'creio que não.', 'você está ansioso, concentre-se e pergunte novamente', 'agora não da to vendo o jogo do flamengo', 'só cordinha pra resolver isso', 'é melhor não te contar...', 'duvidoso', 'objetivamente, sim', 'não tenho certeza... talvez um sub refresque minha memória', 'pergunte novamente depois', 'não.', 'silêncio o MODERADOR Carlima está papando xota.'];
     const value = Math.floor(Math.random() * textos.length);
@@ -131,4 +148,8 @@ function randomText() {
 }
 function onConnectedHandler (addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+}
+
+function executedCommand(command) {
+    console.log(`* Executed ${command} command`);
 }
