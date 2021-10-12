@@ -67,7 +67,7 @@ const acceptedCommands = {
         executedCommand(command);
     },
     comandos(target, context, args, command) {
-        client.say(target, `!redes !youtube !twitter !discord !cortes !followage !zaza !humor !badabing !sonhos !cringe`);
+        client.say(target, `!redes !youtube !twitter !discord !cortes !followage !zaza !humor !badabing !sonhos !cringe !nota !minecraft !pix !emblemas`);
         executedCommand(command);
     },
     sonhos(target, context, args, command) {
@@ -94,15 +94,18 @@ const acceptedCommands = {
         executedCommand(command);
     },
     pix(target, context, args, command) {
-      client.say(target, `DA DINHEIRO https://livepix.gg/distopiapdc`);
+      client.say(target, `DA DINHEIRO`);
+      client.say(target, `-=> https://livepix.gg/distopiapdc`)
       executedCommand(command);
     },
     emblemas(target, context, args, command) {
-      client.say(target, `EMBLEMAS -=> https://imgur.com/a/aArXBea`);
+      client.say(target, `EMBLEMAS`);
+      client.say(target, `-=> https://imgur.com/a/aArXBea`)
       executedCommand(command);
     },
     emblema(target, context, args, command) {
-      client.say(target, `EMBLEMAS -=> https://imgur.com/a/aArXBea`);
+      client.say(target, `EMBLEMAS`);
+      client.say(target, `-=> https://imgur.com/a/aArXBea`)
       executedCommand(command);
     }
 }
@@ -123,7 +126,7 @@ function onMessageHandler (target, context, message, self) {
         var args = message.substring(1).split(' ');
         var command = args[0];
         console.log(args);
-        const commandFunction = acceptedCommands[command];
+        const commandFunction = acceptedCommands[command.toLowerCase()];
         if(commandFunction) {
             commandFunction(target, context, args, command);
             return;
