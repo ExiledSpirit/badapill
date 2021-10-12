@@ -34,7 +34,7 @@ const acceptedCommands = {
         executedCommand(command);
     },
     discord(target, context, args, command) {
-        client.say(target, `https://discord.gg/uvXPf5s9`);
+        client.say(target, `https://discord.gg/hTy3xD9dWn`);
         executedCommand(command);
     },
     cortes(target, context, args, command) {
