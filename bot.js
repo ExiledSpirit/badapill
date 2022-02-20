@@ -1,10 +1,73 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 
+// from threading import Thread
+// import requests
+const axios = require('axios');
+
+const auth = process.env.HEROKU_AUTH;
+const mainApp = process.env.HEROKU_MAIN_APP;
+const recoverApp = process.env.HEROKU_RECOVER_APP;
+let running_app;
+let sleeping_app;
+let sleeping_time;
+// #detect the running app
+const HEADERS = {
+        Accept: 'application/vnd.heroku+json; version=3',
+        Authorization: `Bearer ${auth}`,
+    };
+
+const url = `https://api.heroku.com/apps/${mainApp}/dynos/worker.1`;
+
+async function herokuInit() {
+    const result = await axios.get(url, { headers: HEADERS });
+    
+    if (result.includes(['<Response [200]>','<Response [201]>','<Response [202]>','<Response [206]>'])) {
+        running_app = mainApp;
+        sleeping_app = recoverApp;
+        sleeping_time ='150000';
+    } else {
+        running_app = recoverApp;
+        sleeping_app = mainApp;
+        sleeping_time = '010000';
+    }
+    scheduler();
+}
+
+async function changeDyno() {
+	// #turn on sleeping app
+    const payload = {'quantity': 1};
+    const url = `https://api.heroku.com/apps/${sleeping_app}/formation/worker`;
+    const result = await axios.patch(url, {headers: HEADERS, data=payload });
+
+	// #turn off running app
+    payload = {'quantity': 0};
+    url = `https://api.heroku.com/apps/${running_app}/formation/worker`;
+    result = await axios.patch(url, {headers: HEADERS, data: payload });
+}
+
+
+async function scheduler() {
+    while (true) {
+        setTimeout(() => {
+            time = new Date().toLocaleString().strftime('%d%H%M');
+            if (time === sleeping_time) {
+                changeDyno();
+            }
+        }, 1);
+    }
+}
+
+initHeroku();
+
+
+/**
+ * \/ App \/
+ */
 const opts = {
     identity: {
-        username: process.env.TWITCH_BOT_USERNAME,
-        password: process.env.TWITCH_OAUTH_TOKEN
+        username: 'process.env.badapill',
+        password: 'i7wq3k6qkw6udt23k37nm8zhv0w5m0'
     },
     channels: [
         'distopiapdc'
