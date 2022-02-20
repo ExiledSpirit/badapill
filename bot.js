@@ -66,8 +66,8 @@ herokuInit();
  */
 const opts = {
     identity: {
-        username: 'process.env.badapill',
-        password: 'i7wq3k6qkw6udt23k37nm8zhv0w5m0'
+        username: process.env.TWITCH_BOT_USERNAME,
+        password: process.env.TWITCH_OAUTH_TOKEN
     },
     channels: [
         'distopiapdc'
