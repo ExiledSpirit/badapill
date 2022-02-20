@@ -32,12 +32,12 @@ async function changeDyno() {
 	// #turn on sleeping app
     const payload = {'quantity': 1};
     const url = `https://api.heroku.com/apps/${sleeping_app}/formation/worker`;
-    await axios.patch(url, {headers: HEADERS, data: payload });
+    await axios.patch(url, payload, {headers: HEADERS});
 
 	// #turn off running app
     payload = {'quantity': 0};
     url = `https://api.heroku.com/apps/${running_app}/formation/worker`;
-    await axios.patch(url, {headers: HEADERS, data: payload });
+    await axios.patch(url, payload, {headers: HEADERS});
 }
 
 herokuInit();
