@@ -164,11 +164,11 @@ const acceptedCommands = {
  */
 function deveTrocarApp() {
     const dia = new Date().getDate();
-    if (dia >= 15 && this.running_app === this.mainApp || dia < 15 && this.running_app === this.recoverApp) this.changeDyno();
+    if (dia >= 15 && this.running_app === this.mainApp || dia < 15 && this.running_app === this.recoverApp) changeDyno();
 }
 
 function onMessageHandler (target, context, message, self) {
-    this.deveTrocarApp();
+    deveTrocarApp();
     if (self) { return; }
 
     if(includesMessage(message, 'cellbit')) {
