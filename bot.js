@@ -1,8 +1,6 @@
 require('dotenv').config();
 const tmi = require('tmi.js');
 
-// from threading import Thread
-// import requests
 const axios = require('axios');
 
 const auth = process.env.HEROKU_AUTH;
@@ -10,8 +8,7 @@ const mainApp = process.env.HEROKU_MAIN_APP;
 const recoverApp = process.env.HEROKU_RECOVER_APP;
 let running_app;
 let sleeping_app;
-let sleeping_time;
-// #detect the running app
+
 const HEADERS = {
         Accept: 'application/vnd.heroku+json; version=3',
         Authorization: `Bearer ${auth}`,
@@ -25,45 +22,26 @@ async function herokuInit() {
     if (['<Response [200]>','<Response [201]>','<Response [202]>','<Response [206]>'].some((posicao) => posicao.indexOf(result) >= 0)) {
         running_app = mainApp;
         sleeping_app = recoverApp;
-        sleeping_time ='150000';
     } else {
         running_app = recoverApp;
         sleeping_app = mainApp;
-        sleeping_time = '010000';
     }
-    scheduler();
 }
 
 async function changeDyno() {
 	// #turn on sleeping app
     const payload = {'quantity': 1};
     const url = `https://api.heroku.com/apps/${sleeping_app}/formation/worker`;
-    const result = await axios.patch(url, {headers: HEADERS, data: payload });
+    await axios.patch(url, {headers: HEADERS, data: payload });
 
 	// #turn off running app
     payload = {'quantity': 0};
     url = `https://api.heroku.com/apps/${running_app}/formation/worker`;
-    result = await axios.patch(url, {headers: HEADERS, data: payload });
-}
-
-
-async function scheduler() {
-    while (true) {
-        setTimeout(() => {
-            time = new Date().toLocaleString().strftime('%d%H%M');
-            if (time === sleeping_time) {
-                changeDyno();
-            }
-        }, 1);
-    }
+    await axios.patch(url, {headers: HEADERS, data: payload });
 }
 
 herokuInit();
 
-
-/**
- * \/ App \/
- */
 const opts = {
     identity: {
         username: process.env.TWITCH_BOT_USERNAME,
@@ -181,8 +159,16 @@ const acceptedCommands = {
     }
 }
 
+/**
+ * Verifica se deve trocar de app.
+ */
+function deveTrocarApp() {
+    const dia = new Date().getDate();
+    if (dia >= 15 && this.running_app === this.mainApp || dia < 15 && this.running_app === this.recoverApp) this.changeDyno();
+}
 
 function onMessageHandler (target, context, message, self) {
+    this.deveTrocarApp();
     if (self) { return; }
 
     if(includesMessage(message, 'cellbit')) {
