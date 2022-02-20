@@ -22,7 +22,7 @@ const url = `https://api.heroku.com/apps/${mainApp}/dynos/worker.1`;
 async function herokuInit() {
     const result = await axios.get(url, { headers: HEADERS });
     
-    if (result.includes(['<Response [200]>','<Response [201]>','<Response [202]>','<Response [206]>'])) {
+    if (['<Response [200]>','<Response [201]>','<Response [202]>','<Response [206]>'].some((posicao) => posicao.indexOf(result) >= 0)) {
         running_app = mainApp;
         sleeping_app = recoverApp;
         sleeping_time ='150000';
