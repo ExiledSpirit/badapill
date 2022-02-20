@@ -38,7 +38,7 @@ async function changeDyno() {
 	// #turn on sleeping app
     const payload = {'quantity': 1};
     const url = `https://api.heroku.com/apps/${sleeping_app}/formation/worker`;
-    const result = await axios.patch(url, {headers: HEADERS, data=payload });
+    const result = await axios.patch(url, {headers: HEADERS, data: payload });
 
 	// #turn off running app
     payload = {'quantity': 0};
