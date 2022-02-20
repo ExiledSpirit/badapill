@@ -30,8 +30,8 @@ async function herokuInit() {
 
 async function changeDyno() {
 	// #turn on sleeping app
-    const payload = {'quantity': 1};
-    const url = `https://api.heroku.com/apps/${sleeping_app}/formation/worker`;
+    let payload = {'quantity': 1};
+    let url = `https://api.heroku.com/apps/${sleeping_app}/formation/worker`;
     await axios.patch(url, payload, {headers: HEADERS});
 
 	// #turn off running app
