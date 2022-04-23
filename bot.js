@@ -156,6 +156,11 @@ const acceptedCommands = {
     torre(target, context, args, command) {
       client.say(target, `https://pbs.twimg.com/media/FCum3OmXoAY45Cw.png:large`);
       executedCommand(command);
+    },
+    apoie(target, context, args, command) {
+        client.say(target, `https://apoia.se/distopiapdc`);
+        client.say(target, `https://livepix.gg/distopiapdc`)
+      executedCommand(command);
     }
 }
 
