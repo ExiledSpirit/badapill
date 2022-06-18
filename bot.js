@@ -161,6 +161,10 @@ const acceptedCommands = {
         client.say(target, `https://apoia.se/distopiapdc`);
         client.say(target, `https://livepix.gg/distopiapdc`)
       executedCommand(command);
+    },
+    tabelabits() {
+        client.say(target, `https://pbs.twimg.com/media/FVe6xt4VEAIHLBE.png`);
+        executedCommand(command);
     }
 }
 
