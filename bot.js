@@ -165,6 +165,14 @@ const acceptedCommands = {
     tabelabits(target, context, args, command) {
         client.say(target, `https://pbs.twimg.com/media/FVe6xt4VEAIHLBE.png`);
         executedCommand(command);
+    },
+    operagx(target, context, args, command) {
+        client.say(target, `AGORA O DISTOPIA É PATROCINADO PELO OPERA GX
+
+        Baixem por este link para ajudar a ideia de forma totalmente GRÁTIS e usar o MELHOR navegador do mundo
+        
+        https://core.yematube.com/support/operIIpt1/distopiapdc/OperaGXII/link`);
+        executedCommand(command);
     }
 }
 
