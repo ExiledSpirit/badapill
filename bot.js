@@ -158,6 +158,7 @@ const acceptedCommands = {
       executedCommand(command);
     },
     apoie(target, context, args, command) {
+        client.say(target, 'TOMA VERGONHA NA CARA E APOIE IDEIA! SEJA MEMBRO DO DISTOPIA. Neste primeiro ano de membros estamos fazendo o MURAL DOS APOIADORES. Basta doar 10 reais dentro de 1 mês. Tanto pelo PIX quanto pelo APOIA.SE. Até 29/04/2023 coletaremos assinaturas e desenhos dos membros e faremos uma moldura.');
         client.say(target, `https://apoia.se/distopiapdc`);
         client.say(target, `https://livepix.gg/distopiapdc`)
       executedCommand(command);
