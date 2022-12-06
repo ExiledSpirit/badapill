@@ -3,6 +3,7 @@ const tmi = require('tmi.js');
 
 const axios = require('axios');
 
+const prod = process.env.PROD;
 const auth = process.env.HEROKU_AUTH;
 const mainApp = process.env.HEROKU_MAIN_APP;
 const recoverApp = process.env.HEROKU_RECOVER_APP;
@@ -181,6 +182,7 @@ const acceptedCommands = {
  * Verifica se deve trocar de app.
  */
 function deveTrocarApp() {
+    if (prod) return;
     const dia = new Date().getDate();
     if (dia >= 15 && this.running_app === this.mainApp || dia < 15 && this.running_app === this.recoverApp) changeDyno();
 }
