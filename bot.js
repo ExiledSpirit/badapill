@@ -195,7 +195,7 @@ function onMessageHandler (target, context, message, self) {
         acceptedCommands['cellbit'](target, null, null, 'cellbit');
     }
     if(includesMessage(message, 'pix')) {
-        if (message === '!pix') break;
+        if (message !== '!pix')
         acceptedCommands['pix'](target, null, null, 'pix');
     }
     if(includesMessage(message, 'trolge')) {
