@@ -41,7 +41,7 @@ async function changeDyno() {
     await axios.patch(url, payload, {headers: HEADERS});
 }
 
-herokuInit();
+// herokuInit();
 
 const opts = {
     identity: {
@@ -195,6 +195,7 @@ function onMessageHandler (target, context, message, self) {
         acceptedCommands['cellbit'](target, null, null, 'cellbit');
     }
     if(includesMessage(message, 'pix')) {
+        if (message === '!pix') return;
         acceptedCommands['pix'](target, null, null, 'pix');
     }
     if(includesMessage(message, 'trolge')) {
